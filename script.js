@@ -1,3 +1,6 @@
+//code will have several local variables that help to simplify the code with a longer script
+
+
 import { WORDS } from "./words.js"; //attaches js file with word options
 
 
@@ -88,9 +91,52 @@ function checkGuess () {
     let guessString = ''
     let rightGuess = Array.from(rightGuessString)  //pulls word from random word list, const at the top
 
-    for (const val of currentGuess) {
-        guessString
+    for (const val of currentGuess) {   //loops through array and adds to the string
+        guessString  += val 
+    }
+
+    if (guessString.length != 5) {  //checks for 5 letters before enter
+        alert("Not enough letters!")
+        return
+    }
+
+    if(!WORDS.includes(guessString)){  //looks for guessString in possible list of words
+        alert("word not in list!")
+        return
+    }
+
+    for(let i = 0; i < 5; i++){   //loop through the entry
+        let letterColor = ''
+        let box = row.children[i]   //the child of the row is a box 1-5
+        let letter = currentGuess[i]   //index of current guess
+        
+        //checks if letter is in correct position compared to word list
+        //returns -1 if it doesn't exist
+        let letterPosition = rightGuess.indexOf(currentGuess[i])  
+
+        if (letterPosition === -1) {  //invalid guess appears grey
+            letterColor = 'grey'
+        } else {
+            //letter is in word, correct position/index
+            if (currentGuess[i] === rightGuess[i]) {
+                letterColor = 'green'
+            } else {   //letter is in the word, but not position/index
+                letterColor = 'yellow'
+            }
+
+            rightGuess[letterPosition] = "#"
+        }
+        
+        let delay = 250 * i
+        setTimeout(() => {    //puts shading in the box
+            box.style.backgroundColor = letterColor
+            shadeKeyBoard(letter, letterColor)
+        }, delay)
     }
 
 
+
+
 }
+
+if (guessString)
